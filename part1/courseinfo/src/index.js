@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (props) =>{
-  return <h1>{props.course}</h1>
+const Header = ({name}) =>{
+  return <h1>{name}</h1>
 }
 
-const Part = (props) =>{
-  return <p>{props.name} {props.exercises}</p>
+const Part = ({name, exercises}) =>{
+  return <p>{name} {exercises}</p>
 }
 
 const Content = (props) =>{
@@ -47,7 +47,7 @@ const App = () =>{
 
   return (
     <div>
-      <Header course={course.name} />
+      <Header name={course.name} />
       <Content parts={course.parts} />
       <Total parts={course.parts} />
     </div>
