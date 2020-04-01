@@ -5,11 +5,18 @@ const Button = ({ func, txt }) => <button onClick={func}>{txt}</button>
 
 const App = (props) => {
     const [selected, setSelected] = useState(0)
-
+    const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+    const incPoints = ()=>{
+        const copy = [...points]
+        copy[selected]+=1
+        setPoints(copy)
+    }
     return (
         <div>
-            {props.anecdotes[selected]}
+            <div>{props.anecdotes[selected]}</div>
+            <div>has {points[selected]} votes</div>
             <div>
+                <Button func={incPoints} txt='vote' />
                 <Button func={() => setSelected(Math.floor((Math.random() * props.anecdotes.length)))} txt='next anecdote' />
             </div>
         </div>
