@@ -3,22 +3,38 @@ import ReactDOM from 'react-dom'
 
 const Button = ({ func, txt }) => <button onClick={func}>{txt}</button>
 
-const App = (props) => {
+const PrintAnecdote = ({anecdote, point}) =>(
+    <div>
+        {anecdote}<br />
+        has {point} votes
+    </div>
+)
+
+const App = ({anecdotes}) => {
     const [selected, setSelected] = useState(0)
     const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
-    const incPoints = ()=>{
+
+    //Current most voted anecdote's index.
+    const maxPoint = points.reduce((acc, cur, ind, arr)=>arr[acc] < cur ? ind : acc, 0)
+
+    // Event handlers.
+    const randSelect = () => setSelected(Math.floor((Math.random() * anecdotes.length)))
+    const incPoints = () => {
         const copy = [...points]
         copy[selected]+=1
         setPoints(copy)
     }
+
     return (
         <div>
-            <div>{props.anecdotes[selected]}</div>
-            <div>has {points[selected]} votes</div>
+            <h1>Anecdote of the day</h1>
+            <PrintAnecdote anecdote={anecdotes[selected]} point={points[selected]} />
             <div>
                 <Button func={incPoints} txt='vote' />
-                <Button func={() => setSelected(Math.floor((Math.random() * props.anecdotes.length)))} txt='next anecdote' />
+                <Button func={randSelect} txt='next anecdote' />
             </div>
+            <h1>Anecdote with most votes</h1>
+            <PrintAnecdote anecdote={anecdotes[maxPoint]} point={points[maxPoint]} />
         </div>
     )
 }
