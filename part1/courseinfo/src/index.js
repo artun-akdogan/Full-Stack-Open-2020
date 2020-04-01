@@ -5,25 +5,21 @@ const Header = ({name}) =>{
   return <h1>{name}</h1>
 }
 
-const Part = ({name, exercises}) =>{
-  return <p>{name} {exercises}</p>
+const Part = ({props}) =>{
+  return <p>{props.name} {props.exercises}</p>
 }
 
-const Content = (props) =>{
+const Content = ({parts}) =>{
   //Added "React.Fragment" to eliminate "Each child in a list should have a unique "key" prop" warning.
   return (
     <div>
-      {props.parts.map((val, id)=>(
-          <React.Fragment key={id}>
-            {Part(val)}
-          </React.Fragment>
-        ))}
+      {parts.map((val, id)=><Part key={id}  props={val} />)}
     </div>
   )
 }
 
-const Total = (props) =>{
-  return <p>Number of exercises {props.parts.reduce((acc, val)=> acc+val.exercises, 0)}</p>
+const Total = ({parts}) =>{
+  return <p>Number of exercises {parts.reduce((acc, val)=> acc+val.exercises, 0)}</p>
 }
 
 const App = () =>{
