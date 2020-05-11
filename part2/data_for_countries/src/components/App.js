@@ -4,7 +4,7 @@ import axios from 'axios'
 const App = () =>{
     const [country, setCountry] = useState([])
     const [filterName, setFilterName] = useState('')
-    let countryList = country.filter(val => val.name.toLowerCase().includes(filterName))
+    let countryList = country.filter(val => val.name.toLowerCase().includes(filterName.toLowerCase()))
     let countryInfo = <div></div>
     console.log(countryList)
 
