@@ -2,20 +2,19 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
 const App = () =>{
-    const [country, setCountry] = useState([])
+    const [countries, setCountries] = useState([])
     const [filterName, setFilterName] = useState('')
-    let countryList = country.filter(val => val.name.toLowerCase().includes(filterName.toLowerCase()))
-    let countryInfo = <div></div>
-    console.log(countryList)
+    const countryList = countries.filter(val => val.name.toLowerCase().includes(filterName.toLowerCase()))
+    let countryDisplay = <div></div>
 
     if(countryList.length >= 10){
-        countryInfo = <div>Too many maches, specify another filter</div>
+        countryDisplay = <div>Too many maches, specify another filter</div>
     }
     else if(countryList.length > 1){
-        countryInfo = countryList.map(val => <div key={val.name}>{val.name}</div>)
+        countryDisplay = countryList.map(val => <div key={val.name}>{val.name}<button onClick={()=>setFilterName(val.name)}>show</button></div>)
     } 
     else if(countryList.length === 1){
-        countryInfo = (
+        countryDisplay = (
             <div>
                 <h1>{countryList[0].name}</h1>
                 <p>capital {countryList[0].capital}</p>
@@ -31,16 +30,14 @@ const App = () =>{
 
     useEffect(() => {
         axios.get("https://restcountries.eu/rest/v2/all").then(response => {
-            setCountry(response.data)
+            setCountries(response.data)
         })
     }, [])
-
-    console.log(country)
     
     return (
         <div>
             find countries <input value={filterName} onChange={event => setFilterName(event.target.value)}/>
-            {countryInfo}
+            {countryDisplay}
         </div>
     )
 }
