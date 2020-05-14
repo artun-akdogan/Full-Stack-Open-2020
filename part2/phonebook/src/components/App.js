@@ -18,23 +18,32 @@ const App = () => {
 
     const addPerson = (event) => {
         event.preventDefault()
-        if (persons.some(val => val.name === newName)) {
-            window.alert(`${newName} is already added to phonebook`)
-            return
-        }
+
         const newPerson = {
             name: newName,
             number: newNumber
         }
-        personSvc.create(newPerson).then(response => {
-            setPersons(persons.concat(response.data))
-            setNewName('')
-            setNewNumber('')
-        })
+
+        if (persons.some(val => val.name === newName)) {
+            if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+                const id = persons.find((person => person.name === newName)).id
+                personSvc.update(id, newPerson).then( response => {
+                    setPersons(persons.map(person => person.id !== id ? person : response.data))
+                })
+            }
+
+        } else {
+            personSvc.create(newPerson).then(response => {
+                setPersons(persons.concat(response.data))
+                setNewName('')
+                setNewNumber('')
+            })
+        }
+
     }
 
     const delPerson = (id) => {
-        if(window.confirm(`Delete ${persons.find((person => person.id === id)).name} ?`)){
+        if (window.confirm(`Delete ${persons.find((person => person.id === id)).name} ?`)) {
             personSvc.del(id).then(response => {
                 setPersons(persons.filter(person => person.id !== id))
             })
