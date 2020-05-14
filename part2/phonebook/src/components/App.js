@@ -63,13 +63,19 @@ const App = () => {
         const tempName = persons.find((person => person.id === id)).name
         if (window.confirm(`Delete ${tempName} ?`)) {
             personSvc.del(id).then(response => {
-                setPersons(persons.filter(person => person.id !== id))
                 setNotMsg(`Deleted ${tempName}`)
                 setNotStyl("success")
                 setTimeout(() => {
                     setNotMsg(null)
                 }, 4500)
+            }).catch(error => {
+                setNotMsg(`Information of ${tempName} has already been removed from server`)
+                setNotStyl("error")
+                setTimeout(() => {
+                    setNotMsg(null)
+                }, 4500)
             })
+            setPersons(persons.filter(person => person.id !== id))
         }
     }
 
