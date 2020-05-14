@@ -3,6 +3,7 @@ import Filter from './Filter'
 import PersonForm from './PersonForm'
 import Persons from './Persons'
 import personSvc from './services/Persons'
+import Notification from './Notification'
 
 
 const App = () => {
@@ -10,6 +11,17 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [filterName, setFilterName] = useState('')
+    const [notMsg, setNotMsg] = useState(null)
+    const [notStyl, setNotStyl] = useState({
+        color: 'red',
+        background: 'lightgrey',
+        fontSize: 20,
+        borderStyle: 'solid',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+      })
+
     useEffect(() => {
         personSvc.getAll().then(response => {
             setPersons(response.data)
@@ -31,6 +43,7 @@ const App = () => {
                     setPersons(persons.map(person => person.id !== id ? person : response.data))
                     setNewName('')
                     setNewNumber('')
+
                 })
             }
 
@@ -55,6 +68,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification msg={notMsg} style = {notStyl}/>
             <Filter filterName={filterName} setFilterName={setFilterName} />
             <h3>Add a new</h3>
             <PersonForm newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} addPerson={addPerson} />
