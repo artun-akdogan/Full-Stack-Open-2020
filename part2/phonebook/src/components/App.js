@@ -29,6 +29,8 @@ const App = () => {
                 const id = persons.find((person => person.name === newName)).id
                 personSvc.update(id, newPerson).then( response => {
                     setPersons(persons.map(person => person.id !== id ? person : response.data))
+                    setNewName('')
+                    setNewNumber('')
                 })
             }
 
