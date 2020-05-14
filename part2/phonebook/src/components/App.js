@@ -33,6 +33,14 @@ const App = () => {
         })
     }
 
+    const delPerson = (id) => {
+        if(window.confirm(`Delete ${persons.find((person => person.id === id)).name} ?`)){
+            personSvc.del(id).then(response => {
+                setPersons(persons.filter(person => person.id !== id))
+            })
+        }
+    }
+
     return (
         <div>
             <h2>Phonebook</h2>
@@ -40,7 +48,7 @@ const App = () => {
             <h3>Add a new</h3>
             <PersonForm newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} addPerson={addPerson} />
             <h3>Numbers</h3>
-            <Persons persons={persons} filterName={filterName} />
+            <Persons persons={persons} filterName={filterName} delPerson={delPerson} />
         </div>
     )
 }
