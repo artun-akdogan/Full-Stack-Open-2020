@@ -25,20 +25,42 @@ let persons = [
     }
 ]
 
+const generateId = () => {
+    const maxId = persons.length > 0 ? Math.max(...persons.map(person => person.id)) : 0
+    return maxId + 1
+}
+
 app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
-app.get('/info', (req, res) =>{
+app.get('/info', (req, res) => {
     res.send(`<p>Phonebook has info for ${persons.length} people<br><br>${Date()}`)
+})
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    if (!body.name) {
+        return res.status(400).json({ error: 'name missing' })
+    }
+    if (!body.number) {
+        return res.status(400).json({ error: 'number missing' })
+    }
+    const person = {
+        name : body.name,
+        number: body.number,
+        id: generateId()
+    }
+    persons = persons.concat(person)
+    res.json(person)
 })
 
 app.get('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     const person = persons.find(person => person.id == id)
-    if(person){
+    if (person) {
         res.json(person)
-    }else{
+    } else {
         res.status(404).end()
     }
 })
